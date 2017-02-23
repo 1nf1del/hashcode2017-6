@@ -59,7 +59,7 @@ def read_file(file_path):
 
 
 def write_output(ls_of_caches, file_name):
-    file_name = './output2/%s.out' % file_name
+    file_name = './output3/%s.out' % file_name
     with open(file_name, 'w') as output:
         used_caches = [cache for cache in ls_of_caches if cache.is_used()]
         nr_caches = len(used_caches)

@@ -1,3 +1,5 @@
+import numpy as np
+
 class EndpointManager():
     def __init__(self):
         self.endpoints = []
@@ -22,19 +24,19 @@ class Endpoint():
     def __init__(self, id, dc_latency):
         self.id = id
         self.dc_latency = dc_latency
-        self.connections = []
-        self.requests = []
+        self.connections = [] # [(cache_id, latency), (....), ...]
+        self.requests = [] # [(video_id, number_of_views), (....), ...]
 
     def weight(self):
-        """ Instead of only relying on dc_latency, we also need to know
-        how many requests are coming from this endpoint.
+        """ We want to know how many milliseconds can we save by using caches
         """
         num_of_request = sum([x[1] for x in self.requests])
-        return num_of_request * self.dc_latency
+        avg_cache_latency = np.mean([x[1] for x in self.connections])
+
+        return num_of_request * (self.dc_latency - avg_cache_latency)
 
     def add_cache(self, cache_id, cache_latency):
         self.connections.append((cache_id, cache_latency))
-
 
     def add_request(self, video_id, quantity):
         self.requests.append((video_id, quantity))
