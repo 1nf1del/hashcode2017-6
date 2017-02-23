@@ -35,9 +35,15 @@ class Cache():
         else:
             return False
             
+    def remove_video(self,video):
+        if self.videos[video.id] == 1:
+            self.videos[video.id] = 0
+            self.remaining_space += video.size
+        
+            
             
     def videos_in_cache(self):
-        return [str(x[0]) for x in enumerate(self.videos) if x[1] == 1] 
+        return [x[0] for x in enumerate(self.videos) if x[1] == 1] 
 
 
     def is_used(self):
